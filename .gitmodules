@@ -1,0 +1,6 @@
+[submodule "ZPHR-backend"]
+	path = ZPHR-backend
+	url = https://github.com/ZeroPointMax/ZPHR-backend.git
+[submodule "ZPHR-Android"]
+	path = ZPHR-Android
+	url = https://github.com/ZeroPointMax/ZPHR-Android.git
