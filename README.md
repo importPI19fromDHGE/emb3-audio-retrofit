@@ -18,6 +18,15 @@
 
 Wir benutzen die Github Milestones Funktion [hier](https://github.com/importPI19fromDHGE/emb3-gulla-kerst/milestones?with_issues=no).
 
+## Bestellliste
+
+| ID | Artikel | Menge | Quelle | Einzelpreis | Händler |
+| -: | ------- | ----- | ------ | ----------- | ------- |
+| 0 | Raspberry Pi 4B 4GB Elementary Kit | 1 | https://www.berrybase.de/raspberry-pi/raspberry-pi-computer/kits/raspberry-pi-4-computer-modell-b-4gb-elementary-kit | 69,50€ | BerryBase |
+| 1 | SanDisk MicroSD-Karte 32GB | 1 | https://www.berrybase.de/raspberry-pi/raspberry-pi-computer/speicherkarten/sandisk-extreme-micro-sdhc-a1-uhs-i-u3-speicherkarte-43-adapter-32gb?c=183 | 8,85€ | BerryBase |
+| 2 | HiFiBerry DAC2 Pro | 1 | https://www.hifiberry.com/shop/boards/hifiberry-dac2-pro/ | 39,90€ | HiFiBerry |
+| 3 | Gehäuse für Rasperry Pi 4 mit HiFiBerry DAC | 1 | Y.B. | *nach Vereinbarung*<!--1 Kasten Bier--> | Y.B. |
+
 ## Orga: Git-Submodule
 
 Dieses Projekt enthält Git Submodule.
