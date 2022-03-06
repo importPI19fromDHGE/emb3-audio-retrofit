@@ -34,4 +34,4 @@
   - [ ] das Gerät führt automatisch Paketaktualisierungen durch
   - [ ] die Installation von Updates ist persistent, d.h. geht nicht nach einem Neustart verloren
 - Support für unterschiedliche DACs
-  - [ ] 
+  - [ ] es ist möglich, einen anderen DAC aus einer Liste unterstützter DACs zu wählen, für welchen nach einem Neustart der korrekte Treiber geladen wird
