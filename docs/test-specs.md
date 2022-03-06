@@ -35,3 +35,6 @@
   - [ ] die Installation von Updates ist persistent, d.h. geht nicht nach einem Neustart verloren
 - Support für unterschiedliche DACs
   - [ ] es ist möglich, einen anderen DAC aus einer Liste unterstützter DACs zu wählen, für welchen nach einem Neustart der korrekte Treiber geladen wird
+  - [ ] für die Nutzung von USB-DACs sind alle ``dtoverlay``s deaktiviert
+  - [ ] manuelle Änderungen an der ``config.txt`` werden nicht automatisch überschrieben, sondern ausschließlich nutzergesteuert
+  - [ ] beim Wechsel von manuellen Änderungen werden alle manuellen Änderungen an der ``config.txt`` überschrieben
