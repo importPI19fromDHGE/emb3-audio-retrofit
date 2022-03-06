@@ -1,18 +1,37 @@
 # Testspezifikation
 
-- [ ] es ist möglich, eine Audio-Quelle via SSH auf dem Gerät abzuspielen
-- [ ] ein Android-Gerät kann mit Bluetooth erfolgreich auf das Gerät verbinden und Audio darauf abspielen
-- [ ] ein iOS-Gerät kann ebendies
-- [ ] ein Windows-Gerät kann ebendies
-- [ ] ein Linux-Gerät kann ebendies
-- [ ] ein macOS-Gerät kann ebendies
-- [ ] ein Android-Gerät kann mit UPnP erfolgreich auf das Gerät verbinden und Audio darauf abspielen
-- [ ] ein iOS-Gerät kann ebendies
-- [ ] ein Windows-Gerät kann ebendies
-- [ ] ein Linux-Gerät kann ebendies
-- [ ] ein macOS-Gerät kann ebendies
-- [ ] ein Android-Gerät kann mit Spotify erfolgreich auf das Gerät verbinden und Audio darauf abspielen
-- [ ] ein iOS-Gerät kann ebendies
-- [ ] ein Windows-Gerät kann ebendies
-- [ ] ein Linux-Gerät kann ebendies
-- [ ] ein macOS-Gerät kann ebendies
+- Verbinden des Raspberry Pi mit einem WLAN-Netzwerk
+  - [ ] das Gerät verbindet sich als WLAN-Client auf ein vom Nutzer definiertes Netzwerk und erhält automatisch eine IP-Konfiguration via DHCP
+- Fernwartung mit SSH
+  - [ ] es ist möglich, unter Angabe der IP-Adresse, des korrekten Benutzernamens und eines Passworts, eine SSH-Verbindung zum SSH-Server des Geräts herzustellen
+- Musikwiedergabe auf der Kommandozeile
+  - [ ] es ist möglich, eine Audio-Quelle via SSH auf dem Gerät abzuspielen
+- Musikwiedergabe via Bluetooth
+  - [ ] ein Android-Gerät kann mit Bluetooth erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein iOS-Gerät kann mit Bluetooth erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein Windows-Gerät kann mit Bluetooth erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein Linux-Gerät kann mit Bluetooth erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+- Musikwiedergabe via UPnP
+  - [ ] ein Android-Gerät kann mit UPnP erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein iOS-Gerät kann mit UPnP erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein Windows-Gerät kann mit UPnP erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein Linux-Gerät kann mit UPnP erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+- Musikwiedergabe via Spotify Connect
+  - [ ] ein Android-Gerät kann mit Spotify erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein iOS-Gerät kann mit Spotify erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein Windows-Gerät kann mit Spotify erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+  - [ ] ein Linux-Gerät kann mit Spotify erfolgreich auf das Gerät verbinden und Audio darauf abspielen
+- Parallele Musikwiedergabe
+  - [ ] zwei Audioquellen werden erfolgreich gleichzeitig abgespielt
+- automatische Bereitstellung
+  - [ ] das erzeugte Image funktioniert replizierbar wie dokumentiert nach Abschluss der Ersteinrichtungsprozedur
+- Lautstärkeregelung via Web-Server / App
+  - [ ] eine Anpassung der Lautstärke über das Web-Interface erzeugt eine entsprechende Anpassung der Lautstärke in ALSA
+  - [ ] eine Anpassung der Lautstärke über die Android-App erzeugt eine entsprechende Anpassung der Lautstärke in ALSA
+  - [ ] eine Anpassung der Lautstärke via ``alsamixer`` wird korrekt auf dem Web-Server dargestellt
+- Update-Installation
+  - [ ] das Gerät aktualisiert automatisch seine Paketquellen-Liste
+  - [ ] das Gerät führt automatisch Paketaktualisierungen durch
+  - [ ] die Installation von Updates ist persistent, d.h. geht nicht nach einem Neustart verloren
+- Support für unterschiedliche DACs
+  - [ ] 
