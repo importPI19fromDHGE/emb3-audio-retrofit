@@ -97,3 +97,6 @@ Eine Internet-Recherche ergibt, dass der Befehl wie folgt aufgerufen werden soll
 Daraufhin kann erfolgreich ein Audiosignal über die angeschlossenen Kopfhörer wiedergegeben werden.
 
 Vgl. [HiFiBerry Forum](https://support.hifiberry.com/hc/en-us/community/posts/201495392-It-used-to-work-)
+
+Um zu verifizieren, dass tatsächlich Audio-Dateien abgespielt werden können, wurde eine geeignete M4A-Datei mittels SFTP auf das Gerät übertragen.
+Anschließend wurde der VLC-Media-Player unter Angabe des Befehls ``sudo apt install vlc`` installiert. Mit dem Befehl ``cvlc audio.m4a`` wurde die Datei ``audio.m4a`` erfolgreich auf den angeschlossenen Kopfhörern wiedergegeben.
