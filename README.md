@@ -1,5 +1,10 @@
 # Netzwerk-Audio mit Raspberry Pi als Retrofit Lösung
 
+## Dokumentlinks
+
+- die [Entscheidung zwischen Buildroot und Raspberry Pi OS](./docs/buildroot-vs-rpios.md)
+- die [Testspezifikation](docs/test-specs.md)
+
 ## Produkt-Backlog
 
 | Priorität | User Story | Schätzung Zeitaufwand \[h\] |
