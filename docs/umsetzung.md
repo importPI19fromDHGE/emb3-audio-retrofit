@@ -100,3 +100,32 @@ Vgl. [HiFiBerry Forum](https://support.hifiberry.com/hc/en-us/community/posts/20
 
 Um zu verifizieren, dass tatsächlich Audio-Dateien abgespielt werden können, wurde eine geeignete M4A-Datei mittels SFTP auf das Gerät übertragen.
 Anschließend wurde der VLC-Media-Player unter Angabe des Befehls ``sudo apt install vlc`` installiert. Mit dem Befehl ``cvlc audio.m4a`` wurde die Datei ``audio.m4a`` erfolgreich auf den angeschlossenen Kopfhörern wiedergegeben.
+
+## Installlation von PulseAudio
+
+TODO: Warum PA?
+Das Kernel-Modul ALSA-Sound ist standardmäßig auf dem Raspberry Pi aktiv.
+Dieses bietet die Möglichkeit, eine Audioquelle auf einem Wiedergabegerät auszugeben.
+Eine gleichzeitige Wiedergabe mehrerer Audioquellen ist nicht möglich.
+Möchte man beispielsweise die Wiedergabequelle von Spotifiy-Connect auf Bluetooth-Audio wechseln, ist gegebenenfalls das Wiedergabegerät noch von Spotify-Connect belegt, während Bluetooth-Audio den Zugriff auf das Wiedergabegerät anfordert.
+In diesem Szenario kommt es bei der Nutzung von ALSA-Sound zu einem Fehler.
+Durch die Verwendung von PulseAudio können mehrere Audioquellen gleichzeitig auf ein Wiedergabegerät zugreifen.
+Somit werden Fehler durch den gleichzeitigen Zugriff auf das Wiedergabegerät vermieden und die Verfügbarkeit der Audio-Retrofit-Lösung erhöht.
+
+Die Installation erfolgt nach einem Skript von Nico Kaiser, welches sich vor der Projektumsetzung bewährt hat: [Quelle](https://github.com/nicokaiser/rpi-audio-receiver/blob/main/install.sh)
+Zunächst wird PulseAudio über den Paketmanager installiert: ``sudo apt install pulseaudio``.
+Anschließend werden die Nutzer ``root`` und ``pi`` in die Gruppe ``pulse-access`` hinzugefügt.
+Geschieht das nicht, wird PulseAudio die Wiedergabe von Audioquellen nicht erlauben.
+``root`` muss hinzugefügt werden, da später Dienste im Kontext dieses Nutzers laufen werden.$
+
+```bash
+# usermod: Rechteverwaltung
+# -a : append (zusätzlich zu existierenden Gruppen hinzufügen)
+# -G : Group (das Ziel ist eine Gruppe identifiziert durch ihren Namen)
+# fuege den Benutzer 'root' der Gruppe 'pulse-access' hinzu
+sudo usermod -aG pulse-access root
+# fuege den Benutzer 'pi' der Gruppe 'pulse-access' hinzu
+sudo usermod -aG pulse-access pi 
+```
+
+Um später die Wiedergabe von Bluetooth-Quellen durch PulseAudio zu ermöglichen, benötigt analog dazu der PulseAudio-Nutzer die Zugehörigkeit zur Bluetooth-Gruppe: ``sudo usermod -aG bluetooth pulse``
