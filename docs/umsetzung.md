@@ -103,7 +103,6 @@ Anschließend wurde der VLC-Media-Player unter Angabe des Befehls ``sudo apt ins
 
 ## Installlation von PulseAudio
 
-TODO: Warum PA?
 Das Kernel-Modul ALSA-Sound ist standardmäßig auf dem Raspberry Pi aktiv.
 Dieses bietet die Möglichkeit, eine Audioquelle auf einem Wiedergabegerät auszugeben.
 Eine gleichzeitige Wiedergabe mehrerer Audioquellen ist nicht möglich.
