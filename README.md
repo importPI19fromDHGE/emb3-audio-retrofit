@@ -103,15 +103,16 @@ Referenz zu User-Story-ID: 8
 
 Referenz zu User-Story-ID: 9
 
-- es wird eine Android-App zur Verfügung gestellt, welche mit Hilfe einer REST-API Zugriff auf die Lautstärke-Regelung, Bluetooth-Regelung (An-/Ausschalten, Pairing-Modus) und System-Neustart bereitstellt
+- es wird eine Android-App zur Verfügung gestellt, welche mit Hilfe einer REST-API Zugriff auf die Lautstärke-Regelung, Bluetooth-Regelung (An-/Ausschalten, Pairing-Modus) und das Einleiten eines System-Neustarts bereitstellt
 - die REST-API wird mit Hilfe einer Flask-Anwendung auf dem eingebetteten System bereitgestellt
 
 ### Schreibschutz
 
 Referenz zu User-Story-ID: 10
 
-- das System soll durch Stecken und Ziehen, beziehungsweise Ein- und Ausschalten des Stromanschlusses, ein- und ausgeschaltet werden
+- das System soll durch Stecken und Ziehen, beziehungsweise Ein- und Ausschalten der Spannungsversorgung, ein- und ausgeschaltet werden
 - um einen inkonsistenten Zustand des Speichermediums des eingebetteten Systems zu vermeiden, soll dieses schreibgeschützt sein
+- es soll die Möglichkeit bestehen, für das Koppeln neuer Bluetooth-Geräte und dem Installieren von Software-Updates den Schreibschutz temporär zu deaktivieren
 
 ## Meilensteine
 
