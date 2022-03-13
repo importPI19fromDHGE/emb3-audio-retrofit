@@ -129,7 +129,7 @@ sudo usermod -aG pulse-access pi
 
 Um später die Wiedergabe von Bluetooth-Quellen durch PulseAudio zu ermöglichen, benötigt analog dazu der PulseAudio-Nutzer die Zugehörigkeit zur Bluetooth-Gruppe: ``sudo usermod -aG bluetooth pulse``.
 
-Anschließend erfolgt die Konfiguration von PulseAudio für Bluetooth. Dazu wird der initiale Stand der Konfigurationsdatei unter ``/etc/pulse`` durch einen Kopiervorgang gesichert: `` sudo cp client.conf client.conf.orig``.
+Anschließend erfolgt die Konfiguration von PulseAudio für Bluetooth. Dazu wird der initiale Stand der Konfigurationsdatei unter ``/etc/pulse`` durch einen Kopiervorgang gesichert: ``sudo cp client.conf client.conf.orig``.
 Daraufhin wird mit einem Editor die ``client.conf`` bearbeitet ``sudo nano client.conf``.
 Der Einstellungen ``default-server`` wird das Parameter ``/run/pulse/native`` zugewiesen
 
@@ -156,3 +156,57 @@ PrivateTmp=true
 ExecStart=/usr/bin/pulseaudio --daemonize=no --system --disallow-exit --disable-shm --exit-idle-time=-1 --log-target=journal --realtime --no-cpu-limit
 Restart=on-failure
 ```
+
+Nachfolgende Konfiguration wird getätigt, sodass der PulseAudio-Daemon beim Systemstart automatisch geladen wird: ``sudo systemctl enable pulseaudio.service``.
+
+## Inbetriebnahme Spotify-Connect
+
+Spotify bietet die Möglichkeit, Musik lokal auf einem unterstützten Gerät wiederzugeben.
+Mit Spotify-Connect kann Musik auf ein unterstütztes Gerät wie Sonos-Lautsprecher gestreamt und durch die Spotify-Anwendung auf allen unterstützten Betriebssystemen wie Microsoft Windows, MacOS, Linux, Android und IOS gesteuert werden.
+Dazu ist ein Spotify Premium Abonnement erforderlich.
+Um auf der Audio-Retrofit-Lösung Spotify-Connect in Betrieb zu nehmen, wird  [*Raspotify*](https://github.com/dtcooper/raspotify) von David Cooper verwendet. Somit soll die Audio-Retrofit-Lösung Musik von Endgeräten im gleichen LAN abspielen können.
+Das Programm setzt auf die inoffizielle, aber von Spotify geduldete Open-Source-Lösung *LibreSpot* zur Kommunikation mit dem Streaming-Dienst.
+
+Für die Installation von Raspotify wird zunächst entsprechend der Dokumentation von Raspotify ein öffentlicher PGP-Schlüssel in das System importiert, damit die Authentizität der folgenden Paketquelle verifiziert werden kann: ``curl -sSL https://dtcooper.github.io/raspotify/key.asc | sudo tee /usr/share/keyrings/raspotify_key.asc``.
+
+Die Parametrierung ``-sSL`` von ``curl`` bewirkt folgendes:
+
+- s: keine Kommandozeilenausgabe
+- S: Fehlermeldungen darstellen
+- L: Folgen von URL-Weiterleitungen, falls die angeforderte Ressource verschoben worden ist
+
+Mit Hilfe von ``tee`` wird die Ausgabe von ``curl`` in die Datei ``/usr/share/keyrings/raspotify_key.asc`` umgeleitet.
+Um die Datei ``raspotify_key.asc`` zu schützen, wird nachfolgender Befehl ausgeführt: ``sudo chmod 644 /usr/share/keyrings/raspotify_key.asc``.
+Dies bewirkt, dass der Besitzer Lese- und Schreibzugriff auf die Datei besitzt. 
+Sowohl durch die Gruppe berechtigte Benutzer, als auch alle anderen verfügen nur über Lesezugriff auf die Datei.
+
+Anschließend wird unter Angabe des Public-Keys mit Hilfe des nachfolgenden Befehls dem System die Paketliste bekannt gemacht: ``echo 'deb [signed-by=/usr/share/keyrings/raspotify_key.asc] https://dtcooper.github.io/raspotify raspotify main' | sudo tee /etc/apt/sources.list.d/raspotify.list``.
+
+Nach dem Aktualisieren der Paketlisten durch ``sudo apt-get update``, kann Raspotify durch ``sudo apt install raspotify`` installiert werden.
+Bei der Installation wird Raspotify dem Autostart hinzugefügt.
+
+Vor der Nutzung des Raspotify-Clients erfolgt dessen Konfiguration.
+Diese liegt unter ``/etc/raspotify/conf`` ab.
+Nachfolgende Einstellungen werden unter Angabe des Befehls ``sudo nano /etc/raspotify/conf`` verändert:
+Der unter ``LIBRESPOT_NAME`` gewählte Parameter darf keine Punkte enthalten.
+Die Abkürzung ``DEPPAD`` steht für Durable-Embedded-Pi-Project-Audio-Device.
+
+```bash
+LIBRESPOT_NAME="DEPPAD"
+LIBRESPOT_BITRATE="320"
+LIBRESPOT_DEVICE_TYPE="avr"
+LIBRESPOT_BACKEND="pulseaudio"
+```
+
+Daraufhin muss eine Override-Konfigurationsdatei für den Raspotify-Dienst erstellt werden. Dazu wird die erforderliche Ordnerstruktur mit Hilfe des Befehls ``mkdir -p /etc/systemd/system/raspotify.service.d`` erstellt.
+Anschließend wird in eine ``override.conf`` in diesem Verzeichnis eingetragen:
+
+```txt
+[Unit]
+Wants=pulseaudio.service
+[Service]
+SupplementaryGroups=pulse-access
+```
+
+Dadurch wird Raspotify nach PulseAudio geladen und der Dienst der Gruppe``pulse-access``hinzugefügt.
+Somit darf Raspotify auf PulseAudio zugreifen.
