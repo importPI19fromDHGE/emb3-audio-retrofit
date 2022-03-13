@@ -127,4 +127,32 @@ sudo usermod -aG pulse-access root
 sudo usermod -aG pulse-access pi 
 ```
 
-Um später die Wiedergabe von Bluetooth-Quellen durch PulseAudio zu ermöglichen, benötigt analog dazu der PulseAudio-Nutzer die Zugehörigkeit zur Bluetooth-Gruppe: ``sudo usermod -aG bluetooth pulse``
+Um später die Wiedergabe von Bluetooth-Quellen durch PulseAudio zu ermöglichen, benötigt analog dazu der PulseAudio-Nutzer die Zugehörigkeit zur Bluetooth-Gruppe: ``sudo usermod -aG bluetooth pulse``.
+
+Anschließend erfolgt die Konfiguration von PulseAudio für Bluetooth. Dazu wird der initiale Stand der Konfigurationsdatei unter ``/etc/pulse`` durch einen Kopiervorgang gesichert: `` sudo cp client.conf client.conf.orig``.
+Daraufhin wird mit einem Editor die ``client.conf`` bearbeitet ``sudo nano client.conf``.
+Der Einstellungen ``default-server`` wird das Parameter ``/run/pulse/native`` zugewiesen
+
+ [Quelle](https://gist.github.com/Earnestly/4acc782087c0a9d9db58).
+Dadurch wird der PulseAudio-Daemon in einem dedizierten Socket ausgeführt, der systemweit verwendet wird.
+Des weiteren wird die Einstellungen ``autospawn = no`` getroffen.
+Das Deaktivieren der ``autospawn`` Funktionalität verhindert, dass mehrere PulseAudio-Server auf dem Raspberry Pi gestartet werden [Quelle](https://gavv.github.io/articles/pulseaudio-under-the-hood/).
+
+PulseAudio verwendet Cookies, um Clients gegenüber dem Server zu authentifizieren. Das soll auf einem Mehrbenutzersystem verhindern, dass Anwendungen Audio-Streams an den falschen PulseAudio-Server übermitteln.
+Da das Kopieren von jenen Cookie-Dateien in die jeweiligen Anwendungs-Konfigurationen nicht erwünscht ist, wird diese Funktionalität deaktiviert. Somit können Anwendungen Audio-Streams ohne Authentifizierung übermitteln. Dies ist unproblematisch, da durch die bereits durchgeführte Konfiguration ohnehin nur ein PulseAudio-Server auf dem System aktiv ist.
+Die Anpassung wird durch das Anfügen von ``auth-cookie-enabled=0 auth-anonymous=1`` an die Zeile ``load-module module-native-protocol-unix`` der Datei ``/etc/pulse/system.pa`` realisiert [Quelle](https://wiki.archlinux.org/title/PulseAudio#Networked_audio).
+
+Nach Abschluss der Konfiguration muss PulseAudio als systemweiter SystemD-Dienst registriert werden.
+Dazu wird unter ``/etc/systemd/system/pulseaudio.service`` nachfolgende Konfiguration getätigt:
+
+```conf
+[Unit]
+Description=Sound Service
+[Install]
+WantedBy=multi-user.target
+[Service]
+Type=notify
+PrivateTmp=true
+ExecStart=/usr/bin/pulseaudio --daemonize=no --system --disallow-exit --disable-shm --exit-idle-time=-1 --log-target=journal --realtime --no-cpu-limit
+Restart=on-failure
+```
