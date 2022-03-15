@@ -1,5 +1,6 @@
 # Testspezifikation
 
+
 - Verbinden des Raspberry Pi mit einem WLAN-Netzwerk
   - [ ] das Gerät verbindet sich als WLAN-Client auf ein vom Nutzer definiertes Netzwerk und erhält automatisch eine IP-Konfiguration via DHCP
 - Fernwartung mit SSH

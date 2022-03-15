@@ -208,5 +208,39 @@ Wants=pulseaudio.service
 SupplementaryGroups=pulse-access
 ```
 
-Dadurch wird Raspotify nach PulseAudio geladen und der Dienst der Gruppe``pulse-access``hinzugefügt.
+Dadurch wird Raspotify nach PulseAudio geladen und der Dienst der Gruppe ``pulse-access`` hinzugefügt.
 Somit darf Raspotify auf PulseAudio zugreifen.
+
+TODO
+
+## Einrichten von automatischen Updates
+
+Damit das System automatisch Updates abruft und installiert, ist die Installation des Pakets ``unattended-upgrades`` erforderlich: ``sudo apt install unattended-upgrades`` [Quelle](https://www.cyberciti.biz/faq/how-to-set-up-automatic-updates-for-ubuntu-linux-18-04/).
+Das Paket legt bei der Installation die Dateien ``20auto-upgrades`` und ``50unattended-upgrades`` an und installiert sich als Daemon im Autostart.
+
+Darin ist standardmäßig über die Optionen
+
+```txt
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+```
+
+konfiguriert, dass die Paketliste in Intervallen aktualisiert wird und Paket-Updates automatisch heruntergeladen und installiert werden.
+Mit den folgenden Optionen wird konfiguriert, dass normale Updates und Sicherheitsupdates installiert werden:
+
+```txt
+Unattended-Upgrade::Origins-Pattern {
+        // Codename based matching:
+        // This will follow the migration of a release through different
+        // archives (e.g. from testing to stable and later oldstable).
+        // Software will be the latest available for the named release,
+        // but the Debian release itself will not be automatically upgraded.
+        "origin=Debian,codename=${distro_codename}-updates";
+        "origin=Debian,codename=${distro_codename},label=Debian";
+        "origin=Debian,codename=${distro_codename},label=Debian-Security";
+        "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
+};
+```
+
+Logging wird mit der Option ``Unattended-Upgrade::SyslogEnable "true";`` konfiguriert.
+Die Installation automatischer Updates kann mithilfe der Log-Datei ``/var/log/unattended-upgrades/unattended-upgrades.log`` auf Funktion geprüft werden.

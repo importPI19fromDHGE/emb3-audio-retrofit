@@ -28,7 +28,7 @@
 Referenz zu User-Story-ID: 0
 
 - es erfolgt eine Ausgabe eines analogen Tonsignals über die auf dem DAC vorhandenen Ausgabeports
-  - für das HiFiBerry DAC2 Pro: Stereo 3,5 mm Klinkenanschluss, Stereo Cinch
+  - für das HiFiBerry DAC2 Pro: Stereo 3,5 mm Klinkenanschluss oder Stereo Cinch
   - für den Raspberry Pi integrierten DAC: Stereo 3,5 mm Klinkenanschluss
 - Die Linux-Komponente [ALSA](https://de.wikipedia.org/wiki/Advanced_Linux_Sound_Architecture) steuert den Treiber des DACs an, um ein digitales Tonsignal daran zu senden
 
@@ -92,7 +92,7 @@ Referenz zu User-Story-ID: 7
 - alle durch den Paketmanager verwalteten Pakete sollen dabei aktualisiert werden
 - der Schreibschutz soll während der Update-Installation temporär deaktiviert werden
 
-### Schenllstartanleitung
+### Schnellstartanleitung
 
 Referenz zu User-Story-ID: 8
 
