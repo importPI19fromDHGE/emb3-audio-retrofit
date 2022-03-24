@@ -177,7 +177,7 @@ Die Parametrierung ``-sSL`` von ``curl`` bewirkt folgendes:
 
 Mit Hilfe von ``tee`` wird die Ausgabe von ``curl`` in die Datei ``/usr/share/keyrings/raspotify_key.asc`` umgeleitet.
 Um die Datei ``raspotify_key.asc`` zu schützen, wird nachfolgender Befehl ausgeführt: ``sudo chmod 644 /usr/share/keyrings/raspotify_key.asc``.
-Dies bewirkt, dass der Besitzer Lese- und Schreibzugriff auf die Datei besitzt. 
+Dies bewirkt, dass der Besitzer Lese- und Schreibzugriff auf die Datei besitzt.
 Sowohl durch die Gruppe berechtigte Benutzer, als auch alle anderen verfügen nur über Lesezugriff auf die Datei.
 
 Anschließend wird unter Angabe des Public-Keys mit Hilfe des nachfolgenden Befehls dem System die Paketliste bekannt gemacht: ``echo 'deb [signed-by=/usr/share/keyrings/raspotify_key.asc] https://dtcooper.github.io/raspotify raspotify main' | sudo tee /etc/apt/sources.list.d/raspotify.list``.
@@ -244,3 +244,36 @@ Unattended-Upgrade::Origins-Pattern {
 
 Logging wird mit der Option ``Unattended-Upgrade::SyslogEnable "true";`` konfiguriert.
 Die Installation automatischer Updates kann mithilfe der Log-Datei ``/var/log/unattended-upgrades/unattended-upgrades.log`` auf Funktion geprüft werden.
+
+## Arbeiten an ZPHR
+
+Hinweis an die Autoren: **Dieses Kapitel ist keine vollständige Dokumentation von ZPHR, sondern dokumentiert nur die für EMB3 getätigten Arbeiten**
+
+Die Android-App "ZPHR" muss um die Steuerung des Bluetooth-Zustandes und Schreibschutz-Zustandes erweitert werden.
+In der App wurden dafür zunächst die dafür notwendigen Bedienelemente unter den Verbindungseinstellungen platziert, wie folgend zu sehen ist:
+
+![ZPHR System Fragment mit Bluetooth und Schreibschutz](../assets/220317_zphr_system_fragment.png)
+
+Die Funktionalität der Bedienelemente wird implementiert, wenn das Backend um die entsprechenden Funktionen erweitert wurde.
+Entsprechend haben sie aktuell keine Funktion, sondern sind rein optisch.
+
+Zur Steuerung des Bluetooth-Status wurde sich für Schieberegler entschieden, da diese nach Meinung der Autoren eine optisch ansprechende Darstellung des Systemzustandes ist und gleichzeitig über dasselbe Bedienelement steuerbar ist.
+Die Entwicklungsumgebung "Android Studio" empfahl die Spezifizierung, ob ein Schieberegler vom Typ ``SwitchCompat`` oder vom Typ ``SwitchMaterial`` verwendet werden soll.
+Die Autoren kamen der Empfehlung nach, indem sie in der XML-Ansicht den Typ von der allgemeinen Form ``Switch`` zur spezifizierten Form ``com.google.android.material.switchmaterial.SwitchMaterial`` änderten.
+Die Entscheidung fiel aufgrund von der Empfehlung von Google, Apps nach den [Material Design Guidelines](https://material.io/design/guidelines-overview) zu entwerfen, siehe [Quelle](https://developer.android.com/design).
+
+Zur Steuerung des Schreibschutzes wurde sich für einen Knopf entschieden, der den Schutz entweder deaktiviert oder aktiviert, basierend auf dem Ist-Zustand.
+Durch Änderung der Farbe des Knopfes durch die App-Logik soll signalisiert werden, dass ein aktivierter Schreibschutz *gut* ist und ein deaktivierter Schreibschutz risikobehaftet ist.
+
+Anschließend wird das Backend von ZPHR... TODO
+
+TODO
+
+Um das ZPHR-Backend auf einem Host auszuliefern, muss eine Produktivinstallation durchgeführt werden.
+In der [Flask Dokumentation](https://flask.palletsprojects.com/en/2.0.x/deploying/) wurden verschiedene Optioen für eine Installation erörtert und dabei erschien eine Apache2 Instanz mit dem ``mod_wsgi``-Modul die vielversprechendste Lösung, da so ein Web-Server eine Web-Oberfläche und die REST-API des Backends bereitstellen kann.
+Der Webserver und das WSGI-Modul wurden mit ``sudo apt install apache2 libapache2-mod-wsgi-py3`` installiert.
+In den Dateien des Backends wurde anhand der oben genannten Dokumentation eine ``main.wsgi``-Datei erstellt und wie folgt befüllt:
+
+```py
+from main import app as application
+```
