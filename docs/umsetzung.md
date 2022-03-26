@@ -277,3 +277,28 @@ In den Dateien des Backends wurde anhand der oben genannten Dokumentation eine `
 ```py
 from main import app as application
 ```
+
+## Problem: Hardware-Defekt
+
+TODO
+
+### Feature-Anpassung durch Zeitverlust
+
+Da durch den eben beschriebenen Hardware-Defekt ein erheblicher Zeitaufwand zur Diagnose, Beschaffung von Ersatzhardware und Neu-Konfiguration des Projekts entstand, müssen leider Features aus dem Release-Plan gestrichen werden.
+Dabei wird die Priorität und geschätzter Zeitaufwand der User-Storys berücksichtigt.
+Folgende Features wurden aus dem Backlog gestrichen:
+
+- Backlog ID 6: Support für unterschiedliche DACs
+  - die einzige unterstützte Konfiguration ist nun ein Raspberry Pi 3b mit einem HiFiberry DAC2 PRO
+- Backlog IDs 9, 10: Konfiguration über Web-App
+  - die Konfiguration von Lautstärke, Bluetooth und Schreibschutz wird nun auf eine Android-App beschränkt
+
+Die Testfälle wurden entsprechend angepasst TODO
+
+## Fortsetzung der Einrichtung
+
+TODO UPnP
+
+Anschließend wurde die Installation und Konfiguration des Bluetooth-Systems vorgenommen:
+
+Für den Betrieb werden zwei zusätzliche Pakete benötigt: ``pulseaudio-module-bluetooth``, welches die Brücke zwischen dem Bluetooth-Stack und dem Audio-Stack bildet und ``bluez-tools``, welches den Bluetooth Agent (TODO: was ist das?) bereitstellt.
