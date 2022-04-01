@@ -302,3 +302,43 @@ TODO UPnP
 Anschließend wurde die Installation und Konfiguration des Bluetooth-Systems vorgenommen:
 
 Für den Betrieb werden zwei zusätzliche Pakete benötigt: ``pulseaudio-module-bluetooth``, welches die Brücke zwischen dem Bluetooth-Stack und dem Audio-Stack bildet und ``bluez-tools``, welches den Bluetooth Agent (TODO: was ist das?) bereitstellt.
+Die Installation der Pakete erfolgte mit ``sudo apt install bluez-tools pulseaudio-module-bluetooth``.
+
+Der Bluetooth-Stack wurde in der Datei ``/etc/bluetooth/main.conf`` so konfiguriert, dass die Geräteklasse ``0x200414`` verwendet wird, was einem eingebetteten Audio-Wiedergabegerät entspricht (vgl. [hier](https://github.com/nicokaiser/rpi-audio-receiver/blob/main/install-bluetooth.sh), [hier](http://domoticx.com/bluetooth-class-of-device-lijst-cod/), [hier](https://developer.android.com/reference/com/google/android/things/bluetooth/BluetoothClassFactory)).
+Zudem wurde in derselben Datei mit der Option ``DiscoverableTimeout = 0`` konfiguriert, dass das Gerät immer den Zustand "sichtbar" behält.
+
+Für den Verbindungsaufbau muss das System nach eingehenden Inquiries und Pages scannen, die [hier](https://www.amd.e-technik.uni-rostock.de/ma/gol/lectures/wirlec/bluetooth_info/baseband.html) näher beschrieben werden.
+Zusätzlich sollte sichergestellt werden, dass das System für sowohl gekoppelte als auch ungekoppelte Geräte sichtbar ist, um den Verbindungsaufbau zu erleichtern.
+Es stellt sich die Frage, wie das implementiert werden kann, doch das bereits erwähnte Skript von Nico Kaiser setzt das durch den Aufruf der dafür notwendigen Befehle *vor* dem Start des Bluetooth Agents in dessen Service-Datei:
+
+```txt
+[Unit]
+Description=Bluetooth Agent
+Requires=bluetooth.service
+After=bluetooth.service
+[Service]
+ExecStartPre=/usr/bin/bluetoothctl discoverable on
+ExecStartPre=/bin/hciconfig %I piscan
+ExecStartPre=/bin/hciconfig %I sspmode 1
+ExecStart=/usr/bin/bt-agent --capability=NoInputNoOutput
+RestartSec=5
+Restart=always
+KillSignal=SIGUSR1
+[Install]
+WantedBy=multi-user.target
+```
+
+Diese Datei wird auf das System in die Datei ``/etc/systemd/system/bt-agent@.service`` übernommen.
+Das `@`-Symbol deklariert dabei die Wiederverwendbarkeit des Services für verschiedene Bluetooth-Module und wird mit ``%I`` in der Service-Datei aufgelöst.
+
+Mit dem Befehl ``sudo systemctl daemon-reload`` wurde die SystemD-Konfiguration neu eingelesen und mit ``sudo systemctl enable bt-agent@hci0.service`` der Dienst für das Bluetooth-Modul ``hci0`` aktiviert.
+
+Folgende Optionen wurden in die ``/etc/pulse/system.pa`` übernommen, um die PulseAudio Bluetooth-Module zu laden:
+
+```txt
+# Load Bluetooth 
+load-module module-bluetooth-policy
+load-module module-bluetooth-discover
+```
+
+Da Bluetooth und WiFi 2.4G auf dem gleichen Frequenzband arbeiten, kann es zu Störungen kommen.
